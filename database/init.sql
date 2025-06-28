@@ -1,4 +1,4 @@
--- E-Commerce Database Schema for AWS RDS MySQL
+-- E-Commerce Database Schema for MySQL
 
 CREATE DATABASE IF NOT EXISTS ecommerce_users;
 CREATE DATABASE IF NOT EXISTS ecommerce_products;

@@ -1,6 +1,6 @@
 # E-Commerce Microservices Platform
 
-A complete e-commerce platform built with microservices architecture using Angular, Spring Boot, and AWS RDS.
+A complete e-commerce platform built with microservices architecture using Angular, Spring Boot, and MySQL.
 
 ## Project Structure
 
@@ -69,37 +69,18 @@ e-commerce-microservices/
 ## Quick Start
 
 ### Prerequisites
-- Node.js 18+
-- Java 17+
-- Maven 3.8+
 - Docker & Docker Compose
-- MySQL 8.0+ (or use Docker)
 
-### Option 1: Docker Deployment (Recommended)
+### Docker Deployment
 ```bash
-# Build all services
-build-all.bat
-
 # Start all services with Docker
-docker-compose up -d
+docker-compose up -d --build
 
 # Check service status
 docker-compose ps
 ```
 
-### Option 2: Manual Setup
-```bash
-# 1. Start database
-# Configure MySQL and Redis
 
-# 2. Build and start each service
-cd backend/api-gateway && mvn spring-boot:run
-cd backend/user-service && mvn spring-boot:run
-# ... repeat for all services
-
-# 3. Start frontend
-cd frontend && npm install && ng serve
-```
 
 ## API Documentation
 - **Main API Gateway:** http://localhost:8080/swagger-ui.html
@@ -121,7 +102,7 @@ cd frontend && npm install && ng serve
 ## Technology Stack
 - **Frontend:** Angular 17, Angular Material, TypeScript
 - **Backend:** Spring Boot 3, Spring Security, Spring Data JPA
-- **Database:** AWS RDS MySQL, Redis
+- **Database:** MySQL, Redis
 - **Message Queue:** RabbitMQ
 - **API Gateway:** Spring Cloud Gateway
 - **Service Discovery:** Eureka
