@@ -5,8 +5,8 @@ spring:
   application:
     name: product-service
   datasource:
-    url: jdbc:mysql://your-rds-endpoint:3306/ecommerce_products
-    username: ${DB_USERNAME:admin}
+    url: jdbc:mysql://${DB_HOST:mysql}:${DB_PORT:3306}/${DB_NAME_PRODUCTS:ecommerce_products}
+    username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:password}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:

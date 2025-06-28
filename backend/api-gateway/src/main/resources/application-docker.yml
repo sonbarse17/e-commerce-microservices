@@ -1,0 +1,57 @@
+server:
+  port: ${API_GATEWAY_PORT:8080}
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: http://user-service:${USER_SERVICE_PORT:8081}
+          predicates:
+            - Path=/api/users/**
+        - id: product-service
+          uri: http://product-service:${PRODUCT_SERVICE_PORT:8082}
+          predicates:
+            - Path=/api/products/**
+        - id: inventory-service
+          uri: http://inventory-service:${INVENTORY_SERVICE_PORT:8083}
+          predicates:
+            - Path=/api/inventory/**
+        - id: order-service
+          uri: http://order-service:${ORDER_SERVICE_PORT:8084}
+          predicates:
+            - Path=/api/orders/**
+        - id: payment-service
+          uri: http://payment-service:${PAYMENT_SERVICE_PORT:8085}
+          predicates:
+            - Path=/api/payments/**
+        - id: cart-service
+          uri: http://cart-service:${CART_SERVICE_PORT:8086}
+          predicates:
+            - Path=/api/cart/**
+        - id: notification-service
+          uri: http://notification-service:${NOTIFICATION_SERVICE_PORT:8087}
+          predicates:
+            - Path=/api/notifications/**
+        - id: review-service
+          uri: http://review-service:${REVIEW_SERVICE_PORT:8088}
+          predicates:
+            - Path=/api/reviews/**
+        - id: analytics-service
+          uri: http://analytics-service:${ANALYTICS_SERVICE_PORT:8089}
+          predicates:
+            - Path=/api/analytics/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "${ALLOWED_ORIGINS:http://localhost:4200}"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true

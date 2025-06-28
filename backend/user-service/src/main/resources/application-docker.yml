@@ -5,18 +5,18 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:mysql://${DB_HOST:mysql}:${DB_PORT:3306}/${DB_NAME_USERS:ecommerce_users}
+    url: jdbc:mysql://${DB_HOST:mysql}:${DB_PORT:3306}/${DB_NAME:ecommerce_users}
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:password}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
-logging:
-  level:
-    com.ecommerce.user: DEBUG
+jwt:
+  secret: ${JWT_SECRET:your-jwt-secret-key-here}
+  expiration: ${JWT_EXPIRATION:86400000}
