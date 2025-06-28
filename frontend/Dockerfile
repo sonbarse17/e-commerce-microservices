@@ -4,10 +4,14 @@ FROM node:18-alpine AS build
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install && npm cache clean --force
+RUN npm config set fetch-timeout 60000 && \
+    npm config set fetch-retry-mintimeout 20000 && \
+    npm config set fetch-retry-maxtimeout 120000 && \
+    npm install --no-optional --production=false && \
+    npm cache clean --force
 
 COPY . .
-RUN npm run build --prod
+RUN npm run build
 
 # Production stage
 FROM nginx:alpine
