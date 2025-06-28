@@ -1,6 +1,20 @@
 # E-Commerce Microservices Platform
 
-A complete e-commerce platform built with microservices architecture using Angular, Spring Boot, and MySQL.
+A complete e-commerce platform built with microservices architecture using Angular, Spring Boot, MySQL, and Redis. This platform demonstrates modern cloud-native development practices with containerized services, health monitoring, and scalable architecture.
+
+## Architecture Diagram
+
+![Architecture](./architecture.svg)
+
+## Key Features
+
+✅ **Microservices Architecture** - 10 independent services  
+✅ **Containerized Deployment** - Docker & Docker Compose  
+✅ **Health Monitoring** - Built-in health checks for all services  
+✅ **API Gateway** - Centralized routing and authentication  
+✅ **Caching Layer** - Redis for performance optimization  
+✅ **Database Per Service** - Isolated data storage  
+✅ **Production Ready** - Optimized Docker images with security
 
 ## Project Structure
 
@@ -26,84 +40,272 @@ e-commerce-microservices/
 
 ## Architecture Overview
 
-### Frontend
-- **Angular 17** - Modern web application framework
-- **Angular Material** - UI component library
-- **RxJS** - Reactive programming
+### 🎨 Frontend Layer
+- **Angular 17** - Modern SPA with TypeScript
+- **Angular Material** - Material Design components
+- **RxJS** - Reactive programming patterns
+- **Nginx** - Production web server
 
-### Backend Microservices
-1. **API Gateway** (Port: 8080) - Routing and authentication
-2. **User Service** (Port: 8081) - User management
-3. **Product Service** (Port: 8082) - Product catalog
-4. **Inventory Service** (Port: 8083) - Stock management
-5. **Order Service** (Port: 8084) - Order processing
-6. **Payment Service** (Port: 8085) - Payment handling
-7. **Cart Service** (Port: 8086) - Shopping cart
-8. **Notification Service** (Port: 8087) - Notifications
-9. **Review Service** (Port: 8088) - Reviews and ratings
-10. **Analytics Service** (Port: 8089) - Business analytics
+### 🚪 API Gateway Layer
+- **Spring Cloud Gateway** - Request routing & load balancing
+- **JWT Authentication** - Secure token-based auth
+- **Rate Limiting** - API protection
+- **CORS Configuration** - Cross-origin support
 
-### Infrastructure
-- **MySQL** (Port: 3306) - Primary database
-- **Redis** (Port: 6379) - Caching and session management
-- **Docker Compose** - Container orchestration
+### ⚙️ Microservices Layer
+| Service | Port | Responsibility | Database |
+|---------|------|----------------|----------|
+| **User Service** | 8081 | Authentication, User profiles | MySQL |
+| **Product Service** | 8082 | Product catalog, Search | MySQL |
+| **Inventory Service** | 8083 | Stock management, Availability | MySQL |
+| **Order Service** | 8084 | Order processing, Workflow | MySQL |
+| **Payment Service** | 8085 | Payment processing, Transactions | MySQL |
+| **Cart Service** | 8086 | Shopping cart, Session management | Redis |
+| **Notification Service** | 8087 | Email, SMS, Push notifications | MySQL |
+| **Review Service** | 8088 | Product reviews, Ratings | MySQL |
+| **Analytics Service** | 8089 | Business metrics, Reporting | MySQL |
+
+### 💾 Data Layer
+- **MySQL 8.0** - Primary relational database
+- **Redis 7** - Caching & session storage
+- **Database per Service** - Data isolation pattern
+
+### 🐳 Infrastructure Layer
+- **Docker Compose** - Multi-container orchestration
+- **Health Checks** - Service monitoring
+- **Alpine Linux** - Minimal container images
+- **Non-root Users** - Security hardening
 
 ## Service Ports
 
-| Service | Port | URL | Description |
-|---------|------|-----|-------------|
-| Frontend | 4200 | http://localhost:4200 | Angular Web App |
-| API Gateway | 8080 | http://localhost:8080 | Main Entry Point |
-| User Service | 8081 | http://localhost:8081 | Authentication & Users |
-| Product Service | 8082 | http://localhost:8082 | Product Catalog |
-| Inventory Service | 8083 | http://localhost:8083 | Stock Management |
-| Order Service | 8084 | http://localhost:8084 | Order Processing |
-| Payment Service | 8085 | http://localhost:8085 | Payment Handling |
-| Cart Service | 8086 | http://localhost:8086 | Shopping Cart |
-| Notification Service | 8087 | http://localhost:8087 | Email Notifications |
-| Review Service | 8088 | http://localhost:8088 | Product Reviews |
-| Analytics Service | 8089 | http://localhost:8089 | Business Analytics |
-| MySQL Database | 3306 | localhost:3306 | Primary Database |
-| Redis Cache | 6379 | localhost:6379 | Caching Layer |
+| Service | Port | URL | Health Check | Description |
+|---------|------|-----|--------------|-------------|
+| 🌐 Frontend | 4200 | http://localhost:4200 | ✅ HTTP | Angular Web App |
+| 🚪 API Gateway | 8080 | http://localhost:8080 | ✅ Actuator | Main Entry Point |
+| 👤 User Service | 8081 | http://localhost:8081 | ✅ Actuator | Authentication & Users |
+| 📦 Product Service | 8082 | http://localhost:8082 | ✅ Actuator | Product Catalog |
+| 📊 Inventory Service | 8083 | http://localhost:8083 | ✅ Actuator | Stock Management |
+| 🛒 Order Service | 8084 | http://localhost:8084 | ✅ Actuator | Order Processing |
+| 💳 Payment Service | 8085 | http://localhost:8085 | ✅ Actuator | Payment Handling |
+| 🛍️ Cart Service | 8086 | http://localhost:8086 | ✅ Actuator | Shopping Cart |
+| 📧 Notification Service | 8087 | http://localhost:8087 | ✅ Actuator | Email Notifications |
+| ⭐ Review Service | 8088 | http://localhost:8088 | ✅ Actuator | Product Reviews |
+| 📈 Analytics Service | 8089 | http://localhost:8089 | ✅ Actuator | Business Analytics |
+| 🗄️ MySQL Database | 3306 | localhost:3306 | ✅ mysqladmin | Primary Database |
+| ⚡ Redis Cache | 6379 | localhost:6379 | ✅ redis-cli | Caching Layer |
 
-## Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
-- Docker & Docker Compose
+- **Docker** (v20.10+)
+- **Docker Compose** (v2.0+)
+- **8GB RAM** minimum
+- **Ports 3306, 4200, 6379, 8080-8089** available
 
-### Docker Deployment
+### 🐳 Docker Deployment
 ```bash
-# Start all services with Docker
+# Clone the repository
+git clone <repository-url>
+cd e-commerce-microservices
+
+# Start all services
 docker-compose up -d --build
 
-# Check service status
+# Check service health
 docker-compose ps
+
+# View logs
+docker-compose logs -f [service-name]
+
+# Stop all services
+docker-compose down
+```
+
+### 🔍 Service Health Monitoring
+```bash
+# Check all service health
+for port in {8080..8089}; do
+  echo "Service on port $port:"
+  curl -s http://localhost:$port/actuator/health | jq '.status'
+done
 ```
 
 
 
-## API Documentation
-- **Main API Gateway:** http://localhost:8080/swagger-ui.html
-- **Individual Services:** http://localhost:808X/swagger-ui.html (replace X with service port)
-- **Health Checks:** http://localhost:808X/actuator/health
+## 📚 API Documentation
 
-## Features
-- User registration and authentication
-- Product catalog with search and filtering
-- Shopping cart management
-- Order processing and tracking
-- Payment integration
-- Product reviews and ratings
-- Real-time notifications
-- Analytics dashboard
-- Inventory management
-- Admin panel
+### Swagger UI Endpoints
+- **API Gateway:** http://localhost:8080/swagger-ui.html
+- **User Service:** http://localhost:8081/swagger-ui.html
+- **Product Service:** http://localhost:8082/swagger-ui.html
+- **Order Service:** http://localhost:8084/swagger-ui.html
+- **Payment Service:** http://localhost:8085/swagger-ui.html
 
-## Technology Stack
-- **Frontend:** Angular 17, Angular Material, TypeScript
-- **Backend:** Spring Boot 3, Spring Security, Spring Data JPA
-- **Database:** MySQL, Redis
-- **Message Queue:** RabbitMQ
+### Health Check Endpoints
+- **All Services:** `http://localhost:808X/actuator/health`
+- **MySQL:** `docker exec mysql mysqladmin ping`
+- **Redis:** `docker exec redis redis-cli ping`
+
+### Sample API Calls
+```bash
+# Register user
+curl -X POST http://localhost:8080/api/users/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"john","email":"john@example.com","password":"password123"}'
+
+# Get products
+curl http://localhost:8080/api/products
+
+# Add to cart
+curl -X POST http://localhost:8080/api/cart/add \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"productId":1,"quantity":2}'
+```
+
+## ✨ Features
+
+### 👤 User Management
+- ✅ User registration & login
+- ✅ JWT-based authentication
+- ✅ Profile management
+- ✅ Role-based access control
+
+### 🛍️ E-Commerce Core
+- ✅ Product catalog with search & filters
+- ✅ Shopping cart with session persistence
+- ✅ Order processing workflow
+- ✅ Payment integration ready
+- ✅ Inventory tracking
+- ✅ Product reviews & ratings
+
+### 🔔 Communication
+- ✅ Email notifications
+- ✅ Order status updates
+- ✅ Real-time alerts
+
+### 📊 Analytics & Monitoring
+- ✅ Business metrics dashboard
+- ✅ Service health monitoring
+- ✅ Performance analytics
+- ✅ User behavior tracking
+
+### 🛡️ Security & Performance
+- ✅ API rate limiting
+- ✅ Redis caching
+- ✅ Database connection pooling
+- ✅ Container security hardening
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **Framework:** Angular 17
+- **UI Library:** Angular Material
+- **Language:** TypeScript
+- **Build Tool:** Angular CLI
+- **Web Server:** Nginx (Production)
+
+### Backend
+- **Framework:** Spring Boot 3.2.0
+- **Security:** Spring Security + JWT
+- **Data Access:** Spring Data JPA
 - **API Gateway:** Spring Cloud Gateway
-- **Service Discovery:** Eureka
-- **Monitoring:** Actuator, Micrometer
+- **Language:** Java 17
+- **Build Tool:** Maven 3.9.6
+
+### Databases
+- **Primary:** MySQL 8.0
+- **Cache:** Redis 7
+- **Connection Pooling:** HikariCP
+
+### DevOps & Infrastructure
+- **Containerization:** Docker + Docker Compose
+- **Base Images:** Eclipse Temurin (JRE), Alpine Linux
+- **Monitoring:** Spring Actuator
+- **Health Checks:** Built-in Docker health checks
+
+### Development Tools
+- **IDE:** IntelliJ IDEA / VS Code
+- **API Testing:** Postman / Swagger UI
+- **Version Control:** Git
+
+## 🏗️ Development Setup
+
+### Local Development
+```bash
+# Backend (each service)
+cd backend/[service-name]
+mvn spring-boot:run
+
+# Frontend
+cd frontend
+npm install
+npm start
+```
+
+### Environment Variables
+Create `.env` file:
+```env
+# Database
+MYSQL_ROOT_PASSWORD=rootpassword
+DB_PASSWORD=password
+
+# JWT
+JWT_SECRET=your-secret-key
+JWT_EXPIRATION=86400
+
+# Ports
+API_GATEWAY_PORT=8080
+USER_SERVICE_PORT=8081
+# ... other ports
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Troubleshooting
+
+### Common Issues
+
+**Port conflicts:**
+```bash
+# Check port usage
+netstat -tulpn | grep :8080
+
+# Kill process on port
+sudo kill -9 $(lsof -t -i:8080)
+```
+
+**Docker issues:**
+```bash
+# Clean Docker system
+docker system prune -a
+
+# Rebuild without cache
+docker-compose build --no-cache
+```
+
+**Database connection:**
+```bash
+# Check MySQL logs
+docker-compose logs mysql
+
+# Connect to MySQL
+docker exec -it mysql mysql -u root -p
+```
+
+## 📞 Support
+
+For support and questions:
+- Create an issue on GitHub
+- Check existing documentation
+- Review Docker logs for errors
