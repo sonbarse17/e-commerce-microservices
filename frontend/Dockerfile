@@ -4,13 +4,14 @@ FROM node:18-alpine AS build
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm install && npm cache clean --force
 
 COPY . .
-RUN npm run build
+RUN npm run build --prod
 
 # Production stage
 FROM nginx:alpine
+RUN addgroup -g 1001 -S appgroup && adduser -u 1001 -S appuser -G appgroup
 
 COPY --from=build /app/dist/ecommerce-frontend /usr/share/nginx/html
 
@@ -22,8 +23,10 @@ RUN echo 'server {' > /etc/nginx/conf.d/default.conf && \
     echo '    index index.html index.htm;' >> /etc/nginx/conf.d/default.conf && \
     echo '    try_files $uri $uri/ /index.html;' >> /etc/nginx/conf.d/default.conf && \
     echo '  }' >> /etc/nginx/conf.d/default.conf && \
-    echo '}' >> /etc/nginx/conf.d/default.conf
+    echo '}' >> /etc/nginx/conf.d/default.conf && \
+    chown -R appuser:appgroup /usr/share/nginx/html
 
+USER appuser
 EXPOSE 4200
 
 CMD ["nginx", "-g", "daemon off;"]

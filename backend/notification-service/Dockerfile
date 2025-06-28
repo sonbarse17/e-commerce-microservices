@@ -5,10 +5,12 @@ COPY pom.xml ./pom.xml
 COPY notification-service/pom.xml ./notification-service/pom.xml
 COPY notification-service/src ./notification-service/src
 WORKDIR /app/notification-service
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests && rm -rf ~/.m2/repository
 
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jre-alpine
+RUN addgroup -g 1001 -S appgroup && adduser -u 1001 -S appuser -G appgroup
 WORKDIR /app
 COPY --from=build /app/notification-service/target/*.jar app.jar
+USER appuser
 EXPOSE 8087
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
