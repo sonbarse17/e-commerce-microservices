@@ -7,24 +7,20 @@ export const routes: Routes = [
     loadComponent: () => import('./components/product-list/product-list.component').then(m => m.ProductListComponent)
   },
   { 
-    path: 'products/:id', 
-    loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent)
-  },
-  { 
     path: 'login', 
     loadComponent: () => import('./components/auth/login/login.component').then(m => m.LoginComponent)
   },
   { 
     path: 'register', 
-    loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent)
+    loadComponent: () => import('./components/auth/register/register.component').then(m => m.RegisterComponent)
   },
   { 
     path: 'cart', 
-    loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent)
+    loadComponent: () => import('./components/cart/cart.component').then(m => m.CartComponent)
   },
   { 
     path: 'profile', 
-    loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent)
+    loadComponent: () => import('./components/profile/profile.component').then(m => m.ProfileComponent)
   },
   { path: '**', redirectTo: '/products' }
 ];

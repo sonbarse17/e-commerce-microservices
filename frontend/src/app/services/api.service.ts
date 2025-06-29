@@ -11,10 +11,8 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
     return new HttpHeaders({
-      'Content-Type': 'application/json',
-      ...(token && { 'Authorization': `Bearer ${token}` })
+      'Content-Type': 'application/json'
     });
   }
 
