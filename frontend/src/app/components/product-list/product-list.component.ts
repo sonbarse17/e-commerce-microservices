@@ -30,7 +30,16 @@ import { Product } from '../../models/product.model';
   ],
   template: `
     <div class="product-list-container">
-      <div class="filters">
+      <div *ngIf="loading" class="loading">
+        <p>Loading products...</p>
+      </div>
+      
+      <div *ngIf="error" class="error">
+        <p>{{error}}</p>
+        <button mat-button (click)="loadProducts()">Retry</button>
+      </div>
+      
+      <div *ngIf="!loading && !error" class="filters">
         <mat-form-field>
           <mat-label>Search Products</mat-label>
           <input matInput [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="Search...">
@@ -98,6 +107,14 @@ import { Product } from '../../models/product.model';
       align-items: center;
       gap: 4px;
     }
+    .loading, .error {
+      text-align: center;
+      padding: 40px;
+      font-size: 1.2em;
+    }
+    .error {
+      color: #f44336;
+    }
   `]
 })
 export class ProductListComponent implements OnInit {
@@ -106,6 +123,8 @@ export class ProductListComponent implements OnInit {
   categories: string[] = [];
   searchQuery = '';
   selectedCategory = '';
+  loading = false;
+  error = '';
 
   constructor(
     private productService: ProductService,
@@ -118,12 +137,19 @@ export class ProductListComponent implements OnInit {
   }
 
   loadProducts() {
+    this.loading = true;
+    this.error = '';
     this.productService.getAllProducts().subscribe({
       next: products => {
         this.products = products;
         this.filteredProducts = products;
+        this.loading = false;
       },
-      error: error => console.error('Error loading products:', error)
+      error: error => {
+        console.error('Error loading products:', error);
+        this.error = 'Failed to load products. Backend services may still be starting up.';
+        this.loading = false;
+      }
     });
   }
 
