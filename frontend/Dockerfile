@@ -15,14 +15,21 @@ RUN npm run build
 
 # Production stage
 FROM nginx:alpine
-RUN addgroup -g 1001 -S appgroup && adduser -u 1001 -S appuser -G appgroup
+
+# Install wget for health checks
+RUN apk add --no-cache wget
 
 COPY --from=build /app/dist/ecommerce-frontend /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY health-check.sh /usr/local/bin/health-check.sh
 
-RUN chown -R appuser:appgroup /usr/share/nginx/html
+# Make health check script executable
+RUN chmod +x /usr/local/bin/health-check.sh
 
-USER appuser
 EXPOSE 4200
+
+# Add health check that depends on all backend services
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD /usr/local/bin/health-check.sh
 
 CMD ["nginx", "-g", "daemon off;"]
