@@ -8,19 +8,7 @@ export const routes: Routes = [
   },
   { 
     path: 'products/:id', 
-    loadComponent: () => import('./components/product-detail/product-detail.component').then(m => m.ProductDetailComponent)
-  },
-  { 
-    path: 'cart', 
-    loadComponent: () => import('./components/cart/cart.component').then(m => m.CartComponent)
-  },
-  { 
-    path: 'checkout', 
-    loadComponent: () => import('./components/checkout/checkout.component').then(m => m.CheckoutComponent)
-  },
-  { 
-    path: 'orders', 
-    loadComponent: () => import('./components/order-history/order-history.component').then(m => m.OrderHistoryComponent)
+    loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent)
   },
   { 
     path: 'login', 
@@ -28,14 +16,15 @@ export const routes: Routes = [
   },
   { 
     path: 'register', 
-    loadComponent: () => import('./components/auth/register/register.component').then(m => m.RegisterComponent)
+    loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent)
+  },
+  { 
+    path: 'cart', 
+    loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent)
   },
   { 
     path: 'profile', 
-    loadComponent: () => import('./components/user-profile/user-profile.component').then(m => m.UserProfileComponent)
+    loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent)
   },
-  { 
-    path: 'admin', 
-    loadComponent: () => import('./components/admin/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent)
-  }
+  { path: '**', redirectTo: '/products' }
 ];

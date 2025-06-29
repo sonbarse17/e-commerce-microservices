@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
+import { CartService } from '../../services/cart.service';
 import { Product } from '../../models/product.model';
 
 @Component({
@@ -106,7 +107,10 @@ export class ProductListComponent implements OnInit {
   searchQuery = '';
   selectedCategory = '';
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private cartService: CartService
+  ) {}
 
   ngOnInit() {
     this.loadProducts();
@@ -152,7 +156,9 @@ export class ProductListComponent implements OnInit {
   }
 
   addToCart(product: Product) {
-    // TODO: Implement add to cart functionality
-    console.log('Adding to cart:', product);
+    this.cartService.addToCart(product.id, 1).subscribe({
+      next: () => console.log('Added to cart:', product.name),
+      error: error => console.error('Error adding to cart:', error)
+    });
   }
 }
