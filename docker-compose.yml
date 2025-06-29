@@ -1,286 +1,233 @@
 version: '3.8'
 
 services:
-  # API Gateway
-  api-gateway:
-    build:
-      context: ./backend
-      dockerfile: api-gateway/Dockerfile
-    ports:
-      - "${API_GATEWAY_PORT}:${API_GATEWAY_PORT}"
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
-    depends_on:
-      - user-service
-      - product-service
-      - inventory-service
-      - order-service
-      - payment-service
-      - cart-service
-      - notification-service
-      - review-service
-      - analytics-service
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
-
-  # User Service
-  user-service:
-    build:
-      context: ./backend
-      dockerfile: user-service/Dockerfile
-    ports:
-      - "${USER_SERVICE_PORT}:${USER_SERVICE_PORT}"
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_NAME=${DB_NAME_USERS}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_EXPIRATION=${JWT_EXPIRATION}
-    depends_on:
-      - mysql
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8081/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-  # Product Service
-  product-service:
-    build:
-      context: ./backend
-      dockerfile: product-service/Dockerfile
-    ports:
-      - "${PRODUCT_SERVICE_PORT}:${PRODUCT_SERVICE_PORT}"
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_NAME=${DB_NAME_PRODUCTS}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-    depends_on:
-      - mysql
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8082/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-  # Inventory Service
-  inventory-service:
-    build:
-      context: ./backend
-      dockerfile: inventory-service/Dockerfile
-    ports:
-      - "${INVENTORY_SERVICE_PORT}:${INVENTORY_SERVICE_PORT}"
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_NAME=${DB_NAME_INVENTORY}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-    depends_on:
-      - mysql
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8083/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-  # Order Service
-  order-service:
-    build:
-      context: ./backend
-      dockerfile: order-service/Dockerfile
-    ports:
-      - "${ORDER_SERVICE_PORT}:${ORDER_SERVICE_PORT}"
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_NAME=${DB_NAME_ORDERS}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-    depends_on:
-      - mysql
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8084/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-  # Payment Service
-  payment-service:
-    build:
-      context: ./backend
-      dockerfile: payment-service/Dockerfile
-    ports:
-      - "${PAYMENT_SERVICE_PORT}:${PAYMENT_SERVICE_PORT}"
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_NAME=${DB_NAME_PAYMENTS}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-    depends_on:
-      - mysql
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8085/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-  # Cart Service
-  cart-service:
-    build:
-      context: ./backend
-      dockerfile: cart-service/Dockerfile
-    ports:
-      - "${CART_SERVICE_PORT}:${CART_SERVICE_PORT}"
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_NAME=${DB_NAME_CART}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-    depends_on:
-      - mysql
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8086/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-  # Notification Service
-  notification-service:
-    build:
-      context: ./backend
-      dockerfile: notification-service/Dockerfile
-    ports:
-      - "${NOTIFICATION_SERVICE_PORT}:${NOTIFICATION_SERVICE_PORT}"
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_NAME=${DB_NAME_NOTIFICATIONS}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-    depends_on:
-      - mysql
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8087/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-  # Review Service
-  review-service:
-    build:
-      context: ./backend
-      dockerfile: review-service/Dockerfile
-    ports:
-      - "${REVIEW_SERVICE_PORT}:${REVIEW_SERVICE_PORT}"
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_NAME=${DB_NAME_REVIEWS}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-    depends_on:
-      - mysql
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8088/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-  # Analytics Service
-  analytics-service:
-    build:
-      context: ./backend
-      dockerfile: analytics-service/Dockerfile
-    ports:
-      - "${ANALYTICS_SERVICE_PORT}:${ANALYTICS_SERVICE_PORT}"
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_NAME=${DB_NAME_ANALYTICS}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-    depends_on:
-      - mysql
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8089/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-  # MySQL Database
+  # Database
   mysql:
     image: mysql:8.0
+    container_name: ecommerce-mysql
     ports:
-      - "${MYSQL_PORT}:3306"
+      - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=ecommerce
     volumes:
       - mysql_data:/var/lib/mysql
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     command: --default-authentication-plugin=mysql_native_password
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # Redis for Caching
+  # Redis
   redis:
     image: redis:7-alpine
+    container_name: ecommerce-redis
     ports:
-      - "${REDIS_PORT}:6379"
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      - "6379:6379"
+
+  # API Gateway
+  api-gateway:
+    build: 
+      context: ./backend
+      dockerfile: api-gateway/Dockerfile
+    container_name: ecommerce-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # User Service
+  user-service:
+    build:
+      context: ./backend
+      dockerfile: user-service/Dockerfile
+    container_name: ecommerce-users
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=mysql
+      - DB_NAME=ecommerce_users
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Product Service
+  product-service:
+    build:
+      context: ./backend
+      dockerfile: product-service/Dockerfile
+    container_name: ecommerce-products
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=mysql
+      - DB_NAME=ecommerce_products
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Inventory Service
+  inventory-service:
+    build:
+      context: ./backend
+      dockerfile: inventory-service/Dockerfile
+    container_name: ecommerce-inventory
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=mysql
+      - DB_NAME=ecommerce_inventory
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Order Service
+  order-service:
+    build:
+      context: ./backend
+      dockerfile: order-service/Dockerfile
+    container_name: ecommerce-orders
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=mysql
+      - DB_NAME=ecommerce_orders
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Payment Service
+  payment-service:
+    build:
+      context: ./backend
+      dockerfile: payment-service/Dockerfile
+    container_name: ecommerce-payments
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=mysql
+      - DB_NAME=ecommerce_payments
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Cart Service
+  cart-service:
+    build:
+      context: ./backend
+      dockerfile: cart-service/Dockerfile
+    container_name: ecommerce-cart
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=mysql
+      - DB_NAME=ecommerce_cart
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Notification Service
+  notification-service:
+    build:
+      context: ./backend
+      dockerfile: notification-service/Dockerfile
+    container_name: ecommerce-notifications
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=mysql
+      - DB_NAME=ecommerce_notifications
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Review Service
+  review-service:
+    build:
+      context: ./backend
+      dockerfile: review-service/Dockerfile
+    container_name: ecommerce-reviews
+    ports:
+      - "8088:8088"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=mysql
+      - DB_NAME=ecommerce_reviews
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Analytics Service
+  analytics-service:
+    build:
+      context: ./backend
+      dockerfile: analytics-service/Dockerfile
+    container_name: ecommerce-analytics
+    ports:
+      - "8089:8089"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=mysql
+      - DB_NAME=ecommerce_analytics
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
 
   # Frontend
   frontend:
     build: ./frontend
+    container_name: ecommerce-frontend
     ports:
-      - "${FRONTEND_PORT}:4200"
+      - "4200:4200"
     environment:
-      - API_BASE_URL=${API_BASE_URL}
+      - API_BASE_URL=http://localhost:8080/api
     depends_on:
       - api-gateway
-    healthcheck:
-      test: ["CMD", "/usr/local/bin/health-check.sh"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
+    restart: unless-stopped
 
 volumes:
   mysql_data:
+
+networks:
+  default:
+    name: ecommerce-network
