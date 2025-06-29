@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm config set fetch-timeout 60000 && \
     npm config set fetch-retry-mintimeout 20000 && \
     npm config set fetch-retry-maxtimeout 120000 && \
-    npm install --no-optional --production=false && \
+    npm install --omit=optional && \
     npm cache clean --force
 
 COPY . .
