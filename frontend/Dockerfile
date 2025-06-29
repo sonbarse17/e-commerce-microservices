@@ -26,10 +26,16 @@ COPY health-check.sh /usr/local/bin/health-check.sh
 # Make health check script executable
 RUN chmod +x /usr/local/bin/health-check.sh
 
+# Create startup script to replace API_BASE_URL placeholder
+RUN echo '#!/bin/sh' > /docker-entrypoint.sh && \
+    echo 'sed -i "s|__API_BASE_URL__|${API_BASE_URL}|g" /usr/share/nginx/html/assets/env.js' >> /docker-entrypoint.sh && \
+    echo 'nginx -g "daemon off;"' >> /docker-entrypoint.sh && \
+    chmod +x /docker-entrypoint.sh
+
 EXPOSE 4200
 
 # Add health check that depends on all backend services
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD /usr/local/bin/health-check.sh
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/docker-entrypoint.sh"]
