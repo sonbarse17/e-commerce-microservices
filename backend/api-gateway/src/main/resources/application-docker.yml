@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: api-gateway
+  security:
+    enabled: false
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
   cloud:
     gateway:
       routes:
