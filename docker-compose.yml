@@ -274,32 +274,13 @@ services:
     environment:
       - API_BASE_URL=${API_BASE_URL}
     depends_on:
-      api-gateway:
-        condition: service_healthy
-      user-service:
-        condition: service_healthy
-      product-service:
-        condition: service_healthy
-      inventory-service:
-        condition: service_healthy
-      order-service:
-        condition: service_healthy
-      payment-service:
-        condition: service_healthy
-      cart-service:
-        condition: service_healthy
-      notification-service:
-        condition: service_healthy
-      review-service:
-        condition: service_healthy
-      analytics-service:
-        condition: service_healthy
+      - api-gateway
     healthcheck:
       test: ["CMD", "/usr/local/bin/health-check.sh"]
       interval: 30s
-      timeout: 15s
-      retries: 3
-      start_period: 120s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
 
 volumes:
   mysql_data:
