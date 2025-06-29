@@ -1,6 +1,7 @@
 package com.ecommerce.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -9,6 +10,12 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public User registerUser(UserController.UserRegistrationRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
@@ -21,7 +28,7 @@ public class UserService {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setPhone(request.getPhone());
@@ -30,15 +37,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public boolean loginUser(UserController.UserLoginRequest request) {
+    public String loginUser(UserController.UserLoginRequest request) {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
-        if (!request.getPassword().equals(user.getPassword())) {
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
 
-        return true;
+        return jwtUtil.generateToken(user.getUsername());
     }
 
     public User getUserById(Long id) {

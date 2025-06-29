@@ -220,7 +220,7 @@ services:
     ports:
       - "4200:4200"
     environment:
-      - API_BASE_URL=http://${SERVER_IP}:8080/api
+      - API_BASE_URL=http://localhost:8080/api
     depends_on:
       - api-gateway
     restart: unless-stopped

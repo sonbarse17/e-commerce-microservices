@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     @Autowired
@@ -27,8 +27,8 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody UserLoginRequest request) {
         try {
-            userService.loginUser(request);
-            return ResponseEntity.ok("Login successful");
+            String token = userService.loginUser(request);
+            return ResponseEntity.ok(new LoginResponse(token));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -146,5 +146,13 @@ public class UserController {
         public User.Role getRole() { return role; }
     }
 
+    public static class LoginResponse {
+        private String token;
 
+        public LoginResponse(String token) {
+            this.token = token;
+        }
+
+        public String getToken() { return token; }
+    }
 }

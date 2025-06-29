@@ -11,19 +11,25 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
     return new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      ...(token && { 'Authorization': `Bearer ${token}` })
     });
   }
 
   get<T>(endpoint: string): Observable<T> {
-    return this.http.get<T>(`${this.baseUrl}${endpoint}`, {
+    const url = `${this.baseUrl}${endpoint}`;
+    console.log('API GET request to:', url);
+    return this.http.get<T>(url, {
       headers: this.getHeaders()
     });
   }
 
   post<T>(endpoint: string, data: any): Observable<T> {
-    return this.http.post<T>(`${this.baseUrl}${endpoint}`, data, {
+    const url = `${this.baseUrl}${endpoint}`;
+    console.log('API POST request to:', url, 'with data:', data);
+    return this.http.post<T>(url, data, {
       headers: this.getHeaders()
     });
   }

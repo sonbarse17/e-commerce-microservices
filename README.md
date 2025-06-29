@@ -1,185 +1,140 @@
 # E-Commerce Microservices Platform
 
-A complete e-commerce platform built with microservices architecture using Angular, Spring Boot, MySQL, and Redis. This platform demonstrates modern cloud-native development practices with containerized services and scalable architecture.
-
-## Key Features
-
-✅ **Microservices Architecture** - 9 independent services  
-✅ **Containerized Deployment** - Docker & Docker Compose  
-✅ **API Gateway** - Centralized routing  
-✅ **Caching Layer** - Redis for performance optimization  
-✅ **Database Per Service** - Isolated data storage  
-✅ **No Security Overhead** - Simple development setup
-
-## Project Structure
-
-```
-e-commerce-microservices/
-├── backend/
-│   ├── api-gateway/           # API Gateway (Port: 8080)
-│   ├── user-service/          # User Management (Port: 8081)
-│   ├── product-service/       # Product Catalog (Port: 8082)
-│   ├── inventory-service/     # Stock Management (Port: 8083)
-│   ├── order-service/         # Order Processing (Port: 8084)
-│   ├── payment-service/       # Payment Handling (Port: 8085)
-│   ├── cart-service/          # Shopping Cart (Port: 8086)
-│   ├── notification-service/  # Notifications (Port: 8087)
-│   ├── review-service/        # Reviews & Ratings (Port: 8088)
-│   └── analytics-service/     # Business Analytics (Port: 8089)
-├── frontend/                  # Angular App (Port: 4200)
-├── database/                  # Database Scripts
-├── docker-compose.yml         # Container Orchestration
-└── README.md
-```
-
-## Service Ports
-
-| Service | Port | URL | Description |
-|---------|------|-----|-------------|
-| 🌐 Frontend | 4200 | http://localhost:4200 | Angular Web App |
-| 🚪 API Gateway | 8080 | http://localhost:8080 | Main Entry Point |
-| 👤 User Service | 8081 | http://localhost:8081 | User Management |
-| 📦 Product Service | 8082 | http://localhost:8082 | Product Catalog |
-| 📊 Inventory Service | 8083 | http://localhost:8083 | Stock Management |
-| 🛒 Order Service | 8084 | http://localhost:8084 | Order Processing |
-| 💳 Payment Service | 8085 | http://localhost:8085 | Payment Handling |
-| 🛍️ Cart Service | 8086 | http://localhost:8086 | Shopping Cart |
-| 📧 Notification Service | 8087 | http://localhost:8087 | Notifications |
-| ⭐ Review Service | 8088 | http://localhost:8088 | Product Reviews |
-| 📈 Analytics Service | 8089 | http://localhost:8089 | Business Analytics |
-| 🗄️ MySQL Database | 3306 | localhost:3306 | Primary Database |
-| ⚡ Redis Cache | 6379 | localhost:6379 | Caching Layer |
+A complete e-commerce platform with microservices architecture using Angular, Spring Boot, MySQL, and Redis.
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- **Docker** (v20.10+)
-- **Docker Compose** (v2.0+)
-- **4GB RAM** minimum
-- **Ports 3306, 4200, 6379, 8080-8089** available
+- Docker (v20.10+)
+- Docker Compose (v2.0+)
+- 4GB RAM minimum
 
-### 🐳 Docker Deployment
+### Run Locally
 ```bash
-# Clone the repository
+# Clone and start
 git clone <repository-url>
 cd e-commerce-microservices
 
 # Start all services
 docker-compose up --build
 
-# Check running services
-docker-compose ps
-
-# Stop all services
-docker-compose down
+# Access the application
+# Frontend: http://localhost:4200
+# API Gateway: http://localhost:8080
 ```
 
-## 📚 API Examples
+## 🏗️ Architecture
 
-### User Registration
-```bash
-curl -X POST http://localhost:8081/api/users/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "john",
-    "email": "john@example.com",
-    "password": "password123",
-    "firstName": "John",
-    "lastName": "Doe"
-  }'
+### Services & Ports
+| Service | Port | Internal | Database |
+|---------|------|----------|----------|
+| Frontend | 4200 | ecommerce-frontend | - |
+| API Gateway | 8080 | ecommerce-gateway | - |
+| User Service | 8081 | ecommerce-users | MySQL |
+| Product Service | 8082 | ecommerce-products | MySQL |
+| Inventory Service | 8083 | ecommerce-inventory | MySQL |
+| Order Service | 8084 | ecommerce-orders | MySQL |
+| Payment Service | 8085 | ecommerce-payments | MySQL |
+| Cart Service | 8086 | ecommerce-cart | MySQL |
+| Notification Service | 8087 | ecommerce-notifications | MySQL |
+| Review Service | 8088 | ecommerce-reviews | MySQL |
+| Analytics Service | 8089 | ecommerce-analytics | MySQL |
+| MySQL Database | 3306 | ecommerce-mysql | - |
+| Redis Cache | 6379 | ecommerce-redis | - |
+
+### Network Flow
+```
+Browser → Frontend (4200) → API Gateway (8080) → Microservices (8081-8089) → MySQL/Redis
 ```
 
-### User Login
+## 🔧 Features
+
+### Working Functionality
+- ✅ User registration and login with JWT
+- ✅ Product catalog with search and filters
+- ✅ Shopping cart functionality
+- ✅ Modern responsive UI with animations
+- ✅ Database integration with sample data
+- ✅ Docker containerization
+
+### API Endpoints
 ```bash
-curl -X POST http://localhost:8081/api/users/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "john",
-    "password": "password123"
-  }'
+# Products
+GET http://localhost:8080/api/products
+GET http://localhost:8080/api/products/categories
+
+# Users
+POST http://localhost:8080/api/users/register
+POST http://localhost:8080/api/users/login
+
+# Cart
+GET http://localhost:8080/api/cart/user/{userId}
+POST http://localhost:8080/api/cart/add
 ```
 
-### Get Products
+## 🛠️ Development
+
+### Local Development
 ```bash
-curl http://localhost:8082/api/products
-```
+# View logs
+docker-compose logs -f [service-name]
 
-## ✨ Features
+# Restart specific service
+docker-compose restart [service-name]
 
-### 👤 User Management
-- ✅ User registration & login
-- ✅ Profile management
-- ✅ Simple password storage
-
-### 🛍️ E-Commerce Core
-- ✅ Product catalog
-- ✅ Shopping cart
-- ✅ Order processing
-- ✅ Payment handling
-- ✅ Inventory tracking
-- ✅ Product reviews
-
-### 🔔 Communication
-- ✅ Notification system
-- ✅ Order updates
-
-### 📊 Analytics
-- ✅ Business metrics
-- ✅ User analytics
-
-## 🛠️ Technology Stack
-
-### Frontend
-- **Framework:** Angular 17
-- **Language:** TypeScript
-- **Web Server:** Nginx
-
-### Backend
-- **Framework:** Spring Boot 3.2.0
-- **Data Access:** Spring Data JPA
-- **API Gateway:** Spring Cloud Gateway
-- **Language:** Java 17
-- **Build Tool:** Maven
-
-### Databases
-- **Primary:** MySQL 8.0
-- **Cache:** Redis 7
-
-### Infrastructure
-- **Containerization:** Docker + Docker Compose
-- **Base Images:** Eclipse Temurin, Alpine Linux
-
-## 🆘 Troubleshooting
-
-### Port Conflicts
-```bash
-# Check port usage
-netstat -an | findstr :8080
-
-# Stop Docker services
-docker-compose down
-```
-
-### Database Issues
-```bash
-# Check MySQL logs
-docker-compose logs mysql
-
-# Connect to MySQL
-docker exec -it ecommerce-mysql mysql -u root -p
-```
-
-### Clean Restart
-```bash
-# Clean everything
+# Clean restart
 docker-compose down -v
-docker system prune -f
 docker-compose up --build
 ```
 
-## 📞 Support
+### Database Access
+```bash
+# Connect to MySQL
+docker exec -it ecommerce-mysql mysql -u root -p
+# Password: password
 
-For support:
-- Create an issue on GitHub
-- Check Docker logs: `docker-compose logs [service-name]`
-- Verify all services are running: `docker-compose ps`
+# View databases
+SHOW DATABASES;
+USE ecommerce_products;
+SELECT * FROM products LIMIT 5;
+```
+
+## 🔍 Troubleshooting
+
+### Common Issues
+1. **Port conflicts**: Stop other services using ports 3306, 4200, 6379, 8080-8089
+2. **Memory issues**: Ensure Docker has at least 4GB RAM allocated
+3. **Build failures**: Run `docker system prune -f` and rebuild
+
+### Health Checks
+```bash
+# Check all containers
+docker-compose ps
+
+# Test API Gateway
+curl http://localhost:8080/api/products
+
+# Test direct service
+curl http://localhost:8082/api/products
+```
+
+## 📱 Usage
+
+1. **Access Frontend**: http://localhost:4200
+2. **Register Account**: Click Register → Fill form → Submit
+3. **Browse Products**: View product catalog with filters
+4. **Add to Cart**: Click add to cart on any product
+5. **View Cart**: Click cart icon in navigation
+
+## 🏷️ Default Credentials
+- **Admin User**: admin / password
+- **Database**: root / password
+
+## 🚀 Production Deployment
+
+For production, update:
+- Change default passwords in `.env`
+- Use proper domain names
+- Enable HTTPS
+- Configure proper CORS origins
+- Use production database credentials

@@ -527,15 +527,18 @@ export class ProductListComponent implements OnInit {
   loadProducts() {
     this.loading = true;
     this.error = '';
+    console.log('Loading products from API...');
     this.productService.getAllProducts().subscribe({
       next: products => {
+        console.log('Products loaded successfully:', products);
         this.products = products;
         this.filteredProducts = products;
         this.loading = false;
       },
       error: error => {
         console.error('Error loading products:', error);
-        this.error = 'Failed to load products. Backend services may still be starting up.';
+        console.error('Error details:', error.message, error.status);
+        this.error = `Failed to load products: ${error.message || 'Backend services may still be starting up.'}`;
         this.loading = false;
       }
     });
@@ -570,7 +573,7 @@ export class ProductListComponent implements OnInit {
   }
 
   addToCart(product: Product) {
-    this.cartService.addToCart(product.id, 1).subscribe({
+    this.cartService.addToCart(product.id, 1, product.price).subscribe({
       next: () => console.log('Added to cart:', product.name),
       error: error => console.error('Error adding to cart:', error)
     });
